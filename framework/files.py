@@ -113,7 +113,7 @@ def load_ckpt(path: str, device, train_config: dict, logger: logging.Logger) -> 
                 f = None
                 try:
                     f = open(local_path, 'rb')
-                    data = torch.load(f, map_location=device)
+                    data = torch.load(f, map_location=device, weights_only=False)
                     f.close()
                 except (EOFError, OSError, RuntimeError):
                     logger.debug('Broken checkpoint')
@@ -174,7 +174,7 @@ def load_ckpt(path: str, device, train_config: dict, logger: logging.Logger) -> 
                                     f = None
                                     try:
                                         f = open(fn, 'rb')
-                                        data = torch.load(f, map_location=device)
+                                        data = torch.load(f, map_location=device, weights_only=False)
                                     except (EOFError, OSError, RuntimeError):
                                         logger.debug('Broken checkpoint on the server')
                                         data = None

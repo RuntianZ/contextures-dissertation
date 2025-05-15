@@ -96,6 +96,7 @@ class CatBoostModel(BoostingModel):
 
 
 class XGBoostModel(BoostingModel):
+    # Note: XGBoost 3.0.0 is buggy. Use 2.1.2 instead.
     def build_model(self, dataset: TabularDataset, model_params: dict) -> None:
         model_params.setdefault("num_class", dataset.num_classes)
         match dataset.target_type:
@@ -117,7 +118,10 @@ class XGBoostModel(BoostingModel):
         X = to_numpy(dataset.data)
         y = to_numpy(dataset.target)
         dtrain = xgb.DMatrix(X, label=y)
-        self.model = xgb.train(self.model_params,
+        params = self.model_params.copy()
+        params["device"] = self.device
+        # self.logger.warning("XGBoost: device = {}".format(self.device))
+        self.model = xgb.train(params,
                                dtrain,
                                num_boost_round=self.num_boost_round)
         

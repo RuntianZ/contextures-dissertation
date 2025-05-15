@@ -10,14 +10,18 @@ defaults:
   result_file: ../results_debug/tabpfn.csv
 
 datasets: 
-  - openml__Australian__146818
+  - openml__abalone__361234
 
 recipe:
-  tabpfn/recipe:
+  tabpfn-linear/recipe:
     - module: tabzilla_preprocessor
     - module: numerical_standard_scaler
-    - module: tabpfn
+    - module: standard_scaler
+    - module: tabpfn_embedding
       n_estimators: 8
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.0001
     - module: eval
 
 

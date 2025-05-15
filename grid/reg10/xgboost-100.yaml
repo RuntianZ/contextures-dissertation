@@ -7,9 +7,9 @@ defaults:
   ckpt_folder: baselines
   
 groups:
-  - cls20
+  - reg10
 
-results_folder: cls20/xgboost-100
+results_folder: reg10/xgboost-100
 
 recipe:
   xgboost-100:

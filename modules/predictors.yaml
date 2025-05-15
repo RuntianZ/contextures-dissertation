@@ -39,7 +39,9 @@ decision_tree_model:
 tabpfn:
   class: algorithms.tabpfn.TabPFNModel
   args:
-    - n_ensemble
+    - n_estimators
+    - max_features: 300
+    - subset_rows: 5000
 
 ft_transformer:
   class: algorithms.ft_transformer.FTTransformerModel
@@ -56,6 +58,12 @@ xgboost_embedding_model:
     - num_boost_round: 100
 
 
-
+tabpfn_embedding:
+  class: algorithms.tabpfn.TabPFNEmbedding
+  args:
+    - n_estimators
+    - max_features: 300
+    - subset_rows: 5000
+    - train_ratio: 0.8
 
     

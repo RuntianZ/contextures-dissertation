@@ -1,0 +1,48 @@
+defaults:
+  seed: 0
+  folds: 5
+  debug: True
+  load: False
+  save: False
+  use_ssh: False
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt_debug
+  result_file: ../results_debug/tabpfn-supervised.csv
+
+datasets: 
+  - openml__abalone__361234
+
+recipe:
+  tabpfn-supervised/recipe:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: mixture
+      mode: X
+      raw:
+        - module: dummy_standalone
+      supervised:
+        - module: cat_tokenizer
+          trainable: True
+        - module: mlp_layer
+          dims: [256, 256, 64]
+          dropout: 0.0 
+          residual: False 
+        - module: final_linear_layer
+        - module: fit
+          epochs: 500 
+          lr: 0.001
+          wd: 0.00001
+          optimizer: adamw
+          scheduler: multistep_epoch_0.1_200,400
+          batch_size: 256
+          log_freq: 10
+        - module: transform
+          batch_size: 256 
+        - module: final_linear_latent_features
+    - module: standard_scaler
+    - module: tabpfn
+      n_estimators: 8
+    - module: eval
+
+
+

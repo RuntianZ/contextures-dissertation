@@ -463,6 +463,9 @@ def exp_main(args, config: dict = None):
         default_config['backup_folders'] = env_config['backup_folders'] + default_config['backup_folders']
         if 'results_folder' in env_config:
             default_config['result_file'] = os.path.join(env_config['results_folder'], default_config['result_file'])
+        use_ssh = env_config.get('use_ssh', True)
+        use_ssh1 = default_config.get('use_ssh', False)
+        default_config['use_ssh'] = use_ssh and use_ssh1
 
     if args.data_folder is not None:
         default_config['data_folder'] = args.data_folder

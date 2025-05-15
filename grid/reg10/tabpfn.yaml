@@ -1,0 +1,31 @@
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  data_folder: ../datasets
+  ckpt_folder: baselines
+
+groups:
+  - reg10
+
+results_folder: reg10/tabpfn
+
+recipe:
+  tabpfn:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: tabpfn
+      n_estimators:
+        - 2
+        - 4
+        - 8
+        - 12
+        - 16
+        - 20
+        - 24
+        - 28
+    - module: eval
+
+
+

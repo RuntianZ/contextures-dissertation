@@ -1,8 +1,9 @@
 import logging
 import torch
-from torch.optim.lr_scheduler import LambdaLR, LRScheduler
+from torch.optim.lr_scheduler import LambdaLR, LRScheduler, MultiStepLR
 from torch.optim.optimizer import Optimizer
 from functools import partial
+from framework.utils import str_to_list
 
 
 class Lars(Optimizer):
@@ -203,6 +204,13 @@ def get_scheduler(config: dict, optimizer, num_training_steps: int) -> dict:
         threshold = config.get('scheduler_threshold', 0.0001)
         sch = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=factor, patience=patience, threshold=threshold)
         key = 'loss_epoch'
+    elif scheduler.startswith('multistep'):
+        s = scheduler.split('_')
+        key = s[1]
+        gamma = float(s[2])
+        steps = '[' + s[3] + ']'
+        steps = str_to_list(steps)
+        sch = MultiStepLR(optimizer, steps, gamma=gamma)
     else:
         raise NotImplementedError(f"Scheduler {scheduler} is not supported")
 
