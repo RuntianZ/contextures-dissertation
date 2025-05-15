@@ -1,0 +1,54 @@
+# 89.294
+
+defaults:
+  seed: 0
+  folds: 10
+  load: False
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/conv1.csv
+  debug: True
+
+datasets:
+  - openml__Australian__146818
+  - "openml__ilpd__9971"
+  - "openml__ionosphere__145984"
+  - "openml__iris__59"
+  - "openml__irish__3543"
+
+recipe:
+  conv-test/recipe-1:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: scarf_learner
+      corruption_rate: 0.2
+      encoder:
+        - module: cat_tokenizer
+          trainable: True
+        - module: mlp_layer
+          dims: [256, 256]
+          dropout: 0.0
+          residual: True
+      head: None
+      svme: True
+      std_coeff: 1
+      cov_coeff: 1
+    - module: fit
+      epochs: 200
+      lr: 0.0001
+      wd: 0.00001
+      optimizer: adamw 
+      scheduler: none 
+      batch_size: 256 
+      log_freq: 10 
+    - breakpoint: 1 
+    - module: transform 
+      batch_size: 256 
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.01
+    - module: eval 
+
+

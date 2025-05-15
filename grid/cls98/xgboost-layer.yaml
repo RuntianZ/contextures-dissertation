@@ -1,0 +1,46 @@
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: tests
+
+groups:
+  - cls98
+
+results_folder: cls98/xgboost-layer
+
+recipe:
+  xgboost-layer:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: standard_scaler
+      switch: on/off
+    - module: xgboost_embedding_layer
+      eta:
+        - 0.3
+        - 0.2
+        - 0.1
+        - 0.05
+        - 0.01
+      max_depth:
+        - 5
+        - 10
+      num_boost_round:
+        - 50
+    - module: final_linear_layer
+    - module: fit
+      epochs: 200
+      lr: 
+        - 0.1
+        - 0.01
+      wd: 0.00001
+      optimizer: adamw
+      scheduler: none
+      batch_size: 256
+      log_freq: 10
+    - module: transform
+      batch_size: 256
+    - module: eval

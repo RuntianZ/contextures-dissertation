@@ -1,0 +1,33 @@
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: baselines
+  
+groups:
+  - reg20
+
+results_folder: reg20/xgboost-50
+
+recipe:
+  xgboost-50:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: standard_scaler
+      switch: on/off
+    - module: xgboost_model
+      eta:
+        - 0.3
+        - 0.2
+        - 0.1
+        - 0.05
+        - 0.01
+      max_depth:
+        - 5
+        - 10
+      num_boost_round:
+        - 50
+    - module: eval

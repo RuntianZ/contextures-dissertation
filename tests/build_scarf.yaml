@@ -1,0 +1,53 @@
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt
+
+datasets:
+  - openml__Australian__146818
+
+results_folder: ../results_debug/build_scarf
+
+# groups:
+#   - cls56
+
+recipe:
+  ntxent-scarf:
+    - module: tabzilla_preprocessor
+    - module: scarf_ptrans
+      corruption_rate:
+        - 0.2
+        - 0.4
+        - 0.6
+    - module: cat_tokenizer
+      trainable: True
+    - module: mlp_layer
+      dims: 
+        - [256, 256]
+        - [256, 256, 256]
+      dropout: 0.0
+      residual:
+        - True
+        - False
+    - module: ntxent_ptrain
+      temperature: 
+        - 0.1
+        - 1.0
+      projection_head: []
+    - module: fit
+      epochs: 100
+      lr: 0.0001
+      wd: 0.00001
+      optimizer: adamw
+      batch_size: 256
+      log_freq: 10
+    - module: transform
+      batch_size: 256
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.01
+

@@ -1,0 +1,44 @@
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: False
+  data_folder: ../datasets
+  ckpt_folder: knowledge
+
+groups:
+  - cls42
+
+results_folder: cls42/tabpfn
+
+recipe:
+  tabpfn:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: tabpfn
+      n_ensemble:
+        - 2
+        - 4
+        - 8
+        - 12
+        - 16
+        - 20
+        - 24
+        - 28
+        - 32
+        - 36
+        - 40
+        - 44
+        - 48
+        - 52
+        - 56
+        - 60
+        - 64
+        - 72
+        - 80
+        - 96
+    - module: eval
+
+
+

@@ -1,0 +1,36 @@
+# For exp/build.py
+
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt
+  # result_file: ../results_debug/result.csv
+
+results_folder: ../results_debug
+
+# datasets:
+#   - openml__Australian__146818
+
+groups:
+  - cls56
+
+recipe:
+  linear:
+    - module: tabzilla_preprocessor
+    - module: standard_scaler
+      switch: on/off
+    - module: linear_model
+      ridge:
+        - 1.0
+        - 0.1
+        - 0.01
+        - 0.001
+      bias:
+        - True
+        - False
+      max_iter: 1000
+    - module: eval

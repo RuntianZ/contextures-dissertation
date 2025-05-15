@@ -1,0 +1,33 @@
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: anomaly/anomaly_data_truncated
+  ckpt_folder: /data/locus/project_data/project_data2/rzhai/tabular-rl-ckpt
+
+results_folder: ad39/pyod_loda
+
+groups:
+  - ad39
+
+recipe:
+  pyod_loda:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+      switch: on/off
+    - module: pyod_loda
+      n_bins:
+        - 5
+        - 10
+        - 20
+        - 30
+        - 50
+      n_random_cuts:
+        - 50
+        - 100
+        - 150
+      contamination:
+        - 0.1
+    - module: eval

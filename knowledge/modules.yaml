@@ -1,0 +1,281 @@
+xgboost_embedding_layer:
+  class: knowledge.xgboost.XGBoostEmbeddingLayer
+  args:
+    - eta: 0.1
+    - max_depth: 5
+    - num_boost_round: 100
+
+
+scarf_learner:
+  class: knowledge.learner.SCARFLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  args:
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+    - corruption_rate: 0.6
+    - uniform_eps: 0.000001
+    - distribution: uniform
+
+ylinear_learner:
+  class: knowledge.learner.YLinearLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  args:
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+    - teacher_threshold: 0.1
+    
+
+scarf_ylinear_learner:
+  class: knowledge.learner.SCARFYLinearLearner
+  subrecipe:
+    - encoder
+    - head
+  args:
+    - encoder
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+    - corruption_rate: 0.6
+    - uniform_eps: 0.000001
+    - distribution: uniform
+    - teacher_threshold: 0.1
+
+ylinear_scarf_learner:
+  class: knowledge.learner.YLinearSCARFLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  args:
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+    - corruption_rate: 0.6
+    - uniform_eps: 0.000001
+    - distribution: uniform
+    - teacher_threshold: 0.1
+
+
+cutmix_learner:
+  class: knowledge.learner.CutmixLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  args:
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+    - corruption_rate: 0.6
+
+
+xgboost_scarf_learner:
+  class: knowledge.xgboost.XGBoostSCARFLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  args:
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+    - corruption_rate: 0.6
+    - uniform_eps: 0.000001
+    - distribution: uniform
+    - eta: 0.1
+    - max_depth: 5
+    - num_boost_round: 100
+
+
+exp_ylinear_scarf_learner:
+  class: knowledge.exp.ExperimentalYLinearSCARFLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  args:
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+    - corruption_rate: 0.6
+    - uniform_eps: 0.000001
+    - distribution: uniform
+    - teacher_threshold: 0.1
+
+
+
+
+###################################################################
+scarf_plus_ylinear_minmax_learner:
+  class: knowledge.learner.SCARFPlusYLinearMinmaxLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  subargs:
+    - learner_args
+  args:
+    - learner_args
+    - eta
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+
+
+
+scarf_plus_ylinear_scarf_learner:
+  class: knowledge.learner.SCARFPlusYLinearSCARFLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  subargs:
+    - learner_args
+  args:
+    - learner_args
+    - eta
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+
+scarf_ylinear_plus_ylinear_minmax_learner:
+  class: knowledge.learner.SCARFYLinearPlusYLinearMinmaxLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  subargs:
+    - learner_args
+  args:
+    - learner_args
+    - eta
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+
+cutmix_plus_ylinear_minmax_learner:
+  class: knowledge.learner.CutmixPlusYLinearMinmaxLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  subargs:
+    - learner_args
+  args:
+    - learner_args
+    - eta
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+
+xgboost_learner:
+  class: knowledge.xgboost.XGBoostLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  args:
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+    - eta: 0.1
+    - max_depth: 5
+    - num_boost_round: 100
+    - teacher_threshold: 0.001
+
+xgboost_ylinear_learner:
+  class: knowledge.xgboost.XGBoostYLinearLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  args:
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+    - eta: 0.1
+    - max_depth: 5
+    - num_boost_round: 100
+    - teacher_threshold: 0.001
+
+ylinear_xgboost_learner:
+  class: knowledge.xgboost.YLinearXGBoostLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  args:
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+    - eta: 0.1
+    - max_depth: 5
+    - num_boost_round: 100
+    - teacher_threshold: 0.001
+
+xgboost_plus_ylinear_minmax_learner:
+  class: knowledge.xgboost.XGBoostPlusYLinearMinmaxLearner
+  subrecipe:
+    - encoder
+    - psi_encoder
+    - head
+  subargs:
+    - learner_args
+  args:
+    - learner_args
+    - eta
+    - encoder
+    - psi_encoder: None
+    - head: None
+    - std_coeff
+    - cov_coeff
+    - svme: True
+

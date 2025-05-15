@@ -1,0 +1,60 @@
+# 87.812
+defaults:
+  seed: 0
+  folds: 5
+  load: False
+  save: False
+  use_ssh: True
+  debug: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/scarf.csv
+
+datasets:
+  - openml__Australian__146818
+  - "openml__ilpd__9971"
+  - "openml__ionosphere__145984"
+  - "openml__iris__59"
+  - "openml__irish__3543"
+
+
+# groups:
+#   - cls56
+
+recipe:
+  xgboost-scarf/recipe 2:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: scarf_learner
+      corruption_rate: 0.2
+      encoder:
+        - module: xgboost_embedding_layer
+          eta: 0.1
+          max_depth: 5
+          num_boost_round: 20
+        - module: linear_layer
+          output_dim: 256
+      psi_encoder:
+        - module: mlp_layer
+          dims: [256, 256]
+          dropout: 0.0
+          residual: True
+      svme: True
+      std_coeff: 1
+      cov_coeff: 1
+      head: None
+    - module: fit
+      epochs: 200
+      lr: 0.01
+      wd: 0.00001
+      optimizer: adamw
+      scheduler: none
+      batch_size: 256
+      log_freq: 10
+    - breakpoint: 1
+    - module: transform
+      batch_size: 256
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.0001
+    - module: eval

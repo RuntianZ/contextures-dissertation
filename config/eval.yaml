@@ -1,0 +1,4 @@
+prediction: framework.eval.PredictionEvaluator
+imputation: imputation.eval.ImputationEvaluator
+anomaly: anomaly.eval.ADEvaluator
+time_series: anomaly.eval.TimeSeriesEvaluator

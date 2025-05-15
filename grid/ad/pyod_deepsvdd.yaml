@@ -1,0 +1,51 @@
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: anomaly/anomaly_data_truncated
+  ckpt_folder: /data/locus/project_data/project_data2/rzhai/tabular-rl-ckpt
+
+results_folder: ad39/pyod_deepsvdd
+
+groups:
+  - ad39
+
+recipe:
+  pyod_deepsvdd:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+      switch: on/off
+    - module: pyod_deepsvdd
+      use_ae:
+        - False
+      hidden_neurons:
+        - null
+      hidden_activation:
+        - 'relu'
+      output_activation:
+          - 'sigmoid'
+      epochs:
+        - 50
+        - 100
+        - 150
+      batch_size:
+        - 32
+      dropout_rate:
+        - 0.1
+        - 0.3
+        - 0.5
+      preprocessing:
+        - False
+      l2_regularizer:
+        - 0.1
+        - 0.3
+        - 0.5
+      validation_size:
+        - 0.1
+        - 0.2
+        - 0.3
+      contamination:
+        - 0.1
+    - module: eval

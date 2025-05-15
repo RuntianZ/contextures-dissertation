@@ -1,0 +1,77 @@
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: knowledge
+
+groups:
+  - reg20
+
+results_folder: reg20/xgboost-learner
+
+recipe:
+  xgboost-learner:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: xgboost_learner
+      encoder:
+        - module: cat_tokenizer
+          trainable: True
+        - module: mlp_layer
+          dims:
+            - [256, 256]
+            # - [256, 256, 256, 256]
+            - [256, 128]
+            - [256, 256, 128, 128]
+          dropout: 
+            - 0.0
+            - 0.2
+          residual: False
+      svme: True
+      teacher_threshold:
+        - 0
+        - 0.0001
+        - 0.001
+        - 0.01
+      std_coeff:
+        - 0.3
+        - 1
+        # - 3
+      cov_coeff:
+        - 0.3
+        - 1
+        # - 3
+      head: None
+      eta:
+        - 0.3
+        # - 0.2
+        - 0.1
+        - 0.05
+      max_depth:
+        # - 5
+        - 10
+      num_boost_round:
+        - 100
+    - module: fit
+      epochs: 200
+      lr: 
+        # - 0.001
+        - 0.0001
+      wd: 0.00001
+      optimizer: adamw
+      scheduler: none
+      batch_size: 256
+      log_freq: 10
+    - breakpoint: 1
+    - module: transform
+      batch_size: 256
+    - module: standard_scaler
+    - module: linear_model
+      ridge:
+        - 1.0
+        - 0.01
+        - 0.0001
+    - module: eval

@@ -1,0 +1,54 @@
+
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt_debug
+  result_file: ../results_debug/ylinear_scarf.csv
+  debug: True
+
+datasets:
+  - openml__cjs__14967
+
+recipe:
+  ylinear-scarf:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: ylinear_scarf_learner
+      corruption_rate:
+        - 0.2
+        - 0.4
+        - 0.6
+      encoder:
+        - module: xgboost_embedding_layer
+          eta:
+            - 0.1
+            - 0.3
+          max_depth: 5
+          num_boost_round: 50
+        - module: linear_layer
+          output_dim: 32
+      head: None
+      svme: True
+      std_coeff: 1
+      cov_coeff: 3
+    - module: fit
+      epochs: 200
+      lr: 0.001
+      wd: 0.00001
+      optimizer: adamw 
+      scheduler: none 
+      batch_size: 256 
+      log_freq: 10 
+    - breakpoint: 1 
+    - module: transform 
+      batch_size: 256 
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.01
+    - module: eval 
+
+

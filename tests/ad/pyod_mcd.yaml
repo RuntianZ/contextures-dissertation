@@ -1,0 +1,25 @@
+defaults:
+  data_folder: anomaly/anomaly_data_truncated
+  seed: 0
+  epochs: 2000
+  folds: 5
+  log_interval: 10
+  weight_decay: 0.00001
+  scale_numerical_features: None
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/result.csv
+
+groups:
+  - ad39
+#datasets:
+#  - "4_ad_breastw"
+
+
+recipe:
+  pyod_mcd/recipe 17:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_mcd
+      assume_centered: False
+      contamination: 0.1
+    - module: eval

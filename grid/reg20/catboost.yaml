@@ -1,0 +1,36 @@
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: baselines
+
+groups:
+  - reg20
+
+results_folder: reg20/catboost
+
+recipe:
+  catboost:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: standard_scaler
+      switch: on/off
+    - module: catboost_model
+      iterations:
+        - 50
+      learning_rate:
+        - 0.03
+        - 0.06
+        - 0.1
+        - 0.15
+        - 0.2
+      depth:
+        - 2
+        - 5
+        - 8
+        - 11
+    - module: eval
+    

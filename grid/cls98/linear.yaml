@@ -1,0 +1,36 @@
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: baselines
+
+groups:
+  - cls98
+
+results_folder: cls98/linear
+
+recipe:
+  linear:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: standard_scaler
+      switch: on/off
+    - module: linear_model
+      ridge:
+        - 0.0001
+        - 0.0003
+        - 0.001
+        - 0.003
+        - 0.01
+        - 0.03
+        - 0.1
+        - 0.3
+        - 1.0
+        - 3.0
+      fit_intercept:
+        - True
+        - False
+    - module: eval

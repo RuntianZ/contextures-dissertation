@@ -1,0 +1,107 @@
+defaults:
+  data_folder: anomaly/anomaly_data_truncated
+  seed: 0
+  epochs: 2000
+  folds: 5
+  log_interval: 10
+  weight_decay: 0.00001
+  scale_numerical_features: None
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/result.csv
+
+groups:
+  - ad39
+#datasets:
+#  - "4_ad_breastw"
+
+
+recipe:
+  pyod_xgbod/recipe 1:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 3
+      learning_rate: 0.1
+      n_estimators: 100
+    - module: eval
+
+  pyod_xgbod/recipe 2:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 8
+      learning_rate: 0.1
+      n_estimators: 100
+    - module: eval
+
+  pyod_xgbod/recipe 3:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 13
+      learning_rate: 0.1
+      n_estimators: 100
+    - module: eval
+
+  pyod_xgbod/recipe 4:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 3
+      learning_rate: 0.01
+      n_estimators: 100
+    - module: eval
+
+  pyod_xgbod/recipe 5:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 8
+      learning_rate: 0.01
+      n_estimators: 100
+    - module: eval
+
+  pyod_xgbod/recipe 6:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 3
+      learning_rate: 0.1
+      n_estimators: 50
+    - module: eval
+
+  pyod_xgbod/recipe 7:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 8
+      learning_rate: 0.1
+      n_estimators: 50
+    - module: eval
+
+  pyod_xgbod/recipe 8:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 13
+      learning_rate: 0.1
+      n_estimators: 50
+    - module: eval
+
+  pyod_xgbod/recipe 9:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 3
+      learning_rate: 0.01
+      n_estimators: 50
+    - module: eval
+
+  pyod_xgbod/recipe 10:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 8
+      learning_rate: 0.01
+      n_estimators: 50
+    - module: eval

@@ -1,0 +1,56 @@
+# 75.6867
+
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt_debug
+  result_file: ../results_debug/conv1.csv
+
+datasets:
+  - openml__cjs__14967
+  # - openml__wall-robot-navigation__9960
+  # - openml__steel-plates-fault__146817
+
+recipe:
+  ylinear-scarf-xgboost/recipe-1:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: mixture
+      mode: X
+      raw:
+        - module: dummy_standalone
+      ylinear-scarf:
+        - module: ylinear_scarf_learner
+          corruption_rate: 0.2
+          encoder:
+            - module: cat_tokenizer
+              trainable: True
+            - module: mlp_layer
+              dims: [256, 256]
+              dropout: 0.0
+              residual: False
+          head: None
+          svme: True
+          std_coeff: 0.3
+          cov_coeff: 3
+        - module: fit
+          epochs: 200
+          lr: 0.001
+          wd: 0.00001
+          optimizer: adamw 
+          scheduler: none 
+          batch_size: 256 
+          log_freq: 10 
+        - breakpoint: 1 
+        - module: transform 
+          batch_size: 256 
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.01
+    - module: eval 
+
+

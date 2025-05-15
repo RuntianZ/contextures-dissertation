@@ -1,0 +1,73 @@
+# v3: standard scaler on MLP features only
+
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: baselines
+  
+groups:
+  - cls98
+
+results_folder: cls98/mlp-concat-xgboost-v2
+
+recipe:
+  mlp-concat-xgboost-v2:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: mixture
+      mode: X
+      mlp:
+        - module: cat_tokenizer
+          trainable: True
+        - module: mlp_layer
+          dims:
+            - [256, 256]
+            - [256, 256, 256]
+            - [256, 256, 256, 256]
+            - [256, 128]
+            - [256, 256, 128, 128]
+          dropout:
+            - 0.0
+            - 0.2
+          residual: False
+        - module: final_linear_layer
+        - module: fit
+          epochs: 200
+          lr:
+            - 0.01
+            - 0.001
+            - 0.0001
+          wd: 0.00001
+          optimizer: adamw
+          scheduler: none
+          batch_size: 256
+          log_freq: 10
+        - module: transform
+          batch_size: 256
+        - module: final_linear_latent_features
+        - module: standard_scaler
+      xgboost:
+        - module: standard_scaler
+        - module: xgboost_embedding_model
+          eta:
+            - 0.3
+            - 0.2
+            - 0.1
+            - 0.05
+          max_depth:
+            - 5
+            - 10
+          num_boost_round:
+            - 100
+
+    
+    - module: linear_model
+      ridge:
+        - 1.0
+        - 0.01
+        - 0.0001
+    - module: eval

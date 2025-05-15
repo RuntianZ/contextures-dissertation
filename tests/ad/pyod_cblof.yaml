@@ -1,0 +1,65 @@
+defaults:
+  data_folder: anomaly/anomaly_data_truncated
+  seed: 0
+  epochs: 2000
+  folds: 5
+  log_interval: 10
+  weight_decay: 0.00001
+  scale_numerical_features: None
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/result.csv
+
+groups:
+  - ad39
+#datasets:
+#  - "4_ad_breastw"
+
+
+recipe:
+  pyod_cblof/recipe 1:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_cblof
+      n_clusters: 10
+      contamination: 0.1
+    - module: eval
+
+  pyod_cblof/recipe 2:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_cblof
+      n_clusters: 13
+      contamination: 0.1
+    - module: eval
+
+  pyod_cblof/recipe 3:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_cblof
+      n_clusters: 16
+      contamination: 0.1
+    - module: eval
+
+  pyod_cblof/recipe 4:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_cblof
+      n_clusters: 19
+      contamination: 0.1
+    - module: eval
+
+  pyod_cblof/recipe 5:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_cblof
+      n_clusters: 22
+      contamination: 0.1
+    - module: eval
+
+  pyod_cblof/recipe 6:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_cblof
+      n_clusters: 25
+      contamination: 0.1
+    - module: eval

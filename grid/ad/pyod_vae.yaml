@@ -1,0 +1,57 @@
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: anomaly/anomaly_data_truncated
+  ckpt_folder: /data/locus/project_data/project_data2/rzhai/tabular-rl-ckpt
+
+results_folder: ad39/pyod_vae
+
+
+groups:
+  - ad39
+
+
+recipe:
+  pyod_vae:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+      switch: on/off
+    - module: pyod_vae
+      encoder_neuron_list:
+        - [128, 64, 32]
+      decoder_neuron_list:
+        - [32, 64, 128]
+      latent_dim:
+        - 2
+      lr:
+        - 1e-4
+        - 1e-5
+      batch_norm:
+        - True
+        - False
+      epoch_num:
+        - 20
+        - 50
+        - 100
+        - 150
+      batch_size:
+        - 32
+      dropout_rate:
+        - 0.1
+        - 0.2
+        - 0.3
+      preprocessing:
+        - True
+        - False
+      hidden_activation_name:
+        - "relu"
+      output_activation_name:
+        - "sigmoid"
+      contamination:
+        - 0.1
+      device:
+        - "cuda"
+    - module: eval

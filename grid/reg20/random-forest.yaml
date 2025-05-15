@@ -1,0 +1,32 @@
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: baselines
+
+groups:
+  - reg20
+
+results_folder: reg20/random-forest
+
+recipe:
+  random-forest:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: standard_scaler
+      switch: on/off
+    - module: random_forest_model
+      n_estimators:
+        - 10
+        - 20
+        - 40
+        - 60
+      max_depth:
+        - 5
+        - 10
+        - 15
+    - module: eval
+    

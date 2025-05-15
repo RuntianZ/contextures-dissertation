@@ -1,0 +1,41 @@
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: False
+  data_folder: ../datasets
+  ckpt_folder: knowledge
+
+groups:
+  - cls42
+
+results_folder: cls42/ft_transformer
+
+recipe:
+  ft_transformer:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: ft_transformer
+      n_blocks:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+    - module: fit
+      epochs: 200
+      lr:
+        - 0.001
+        - 0.0001
+      wd: 0.00001
+      optimizer: adamw
+      scheduler: none
+      batch_size: 
+        - 128
+        - 256
+      log_freq: 10
+    - module: transform
+      batch_size: 256
+    - module: eval

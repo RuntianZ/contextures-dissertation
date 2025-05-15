@@ -1,0 +1,61 @@
+############### Baselines
+linear_model: 
+  class: algorithms.basic.LinearModel
+  args: 
+    - ridge
+    - max_iter: 1000
+    - fit_intercept: True
+
+random_forest_model:
+  class: algorithms.boosting.RandomForestModel
+  args:
+    - n_estimators: 100
+    - max_depth: 5
+
+catboost_model:
+  class: algorithms.boosting.CatBoostModel
+  args:
+    - iterations: 100
+    - learning_rate: 0.01
+    - depth: 5
+
+xgboost_model:
+  class: algorithms.boosting.XGBoostModel
+  args:
+    - eta: 0.1
+    - max_depth: 5
+    - num_boost_round: 100
+
+knn_model:
+  class: algorithms.boosting.KNNModel
+  args:
+    - n_neighbors   # 5
+
+decision_tree_model:
+  class: algorithms.boosting.DecisionTreeModel
+  args:
+    - max_depth  # 5
+    
+tabpfn:
+  class: algorithms.tabpfn.TabPFNModel
+  args:
+    - n_ensemble
+
+ft_transformer:
+  class: algorithms.ft_transformer.FTTransformerModel
+  args:
+    - n_blocks
+
+
+##################################
+xgboost_embedding_model:
+  class: algorithms.boosting.XGBoostEmbeddingModel
+  args:
+    - eta: 0.1
+    - max_depth: 5
+    - num_boost_round: 100
+
+
+
+
+    

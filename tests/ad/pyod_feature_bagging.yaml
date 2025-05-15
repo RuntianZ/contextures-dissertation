@@ -1,0 +1,81 @@
+defaults:
+  data_folder: anomaly/anomaly_data_truncated
+  seed: 0
+  epochs: 2000
+  folds: 5
+  log_interval: 10
+  weight_decay: 0.00001
+  scale_numerical_features: None
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/result.csv
+
+groups:
+  - ad39
+#datasets:
+#  - "4_ad_breastw"
+
+
+recipe:
+  pyod_feature_bagging/recipe 1:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_feature_bagging
+      n_estimators: 10
+      bootstrap_features: False
+    - module: eval
+
+  pyod_feature_bagging/recipe 2:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_feature_bagging
+      n_estimators: 5
+      bootstrap_features: False
+    - module: eval
+
+  pyod_feature_bagging/recipe 3:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_feature_bagging
+      n_estimators: 20
+      bootstrap_features: False
+    - module: eval
+
+  pyod_feature_bagging/recipe 4:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_feature_bagging
+      n_estimators: 30
+      bootstrap_features: False
+    - module: eval
+
+  pyod_feature_bagging/recipe 5:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_feature_bagging
+      n_estimators: 10
+      bootstrap_features: True
+    - module: eval
+
+  pyod_feature_bagging/recipe 6:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_feature_bagging
+      n_estimators: 5
+      bootstrap_features: True
+    - module: eval
+
+  pyod_feature_bagging/recipe 7:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_feature_bagging
+      n_estimators: 20
+      bootstrap_features: True
+    - module: eval
+
+  pyod_feature_bagging/recipe 8:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_feature_bagging
+      n_estimators: 30
+      bootstrap_features: True
+    - module: eval

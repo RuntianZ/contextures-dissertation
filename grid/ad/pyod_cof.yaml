@@ -1,0 +1,35 @@
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: anomaly/anomaly_data_truncated
+  ckpt_folder: /data/locus/project_data/project_data2/rzhai/tabular-rl-ckpt
+
+results_folder: ad39/pyod_cof
+
+groups:
+  - ad39
+
+recipe:
+  pyod_cof:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+      switch: on/off
+    - module: pyod_cof
+      n_neighbors:
+        - 10
+        - 15
+        - 20
+        - 25
+        - 30
+        - 35
+        - 40
+        - 45
+        - 50
+      method:
+        - "fast"
+      contamination:
+        - 0.1
+    - module: eval

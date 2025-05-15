@@ -1,0 +1,76 @@
+# For exp/build.py
+
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt
+  # result_file: ../results_debug/result.csv
+
+results_folder: ../results_debug
+
+datasets:
+  - openml__Australian__146818
+
+# groups:
+  # - cls56
+
+recipe:
+  ntxent-scarf:
+    - module: tabzilla_preprocessor
+    - module: mixture
+      mode: X    # X, y, or both
+      scarf:
+        - module: scarf_ptrans
+          corruption_rate:
+            - 0.2
+            - 0.4
+        - module: cat_tokenizer
+          switch: on/off
+          trainable: True
+        - module: mlp_layer
+          dims: [256, 256]
+          dropout: 0.0
+        - module: ntxent_ptrain
+          temperature:
+            - 1.0
+        - module: fit
+          epochs: 300
+          lr: 0.0001
+          wd: 0.00001
+          optimizer: adamw
+          batch_size: 256
+          log_freq: 10
+        - module: transform
+          batch_size: 256
+
+      mlp:
+        - module: mlp_layer
+          dims:
+            - [256, 256]
+            - [256, 256, 256]
+          dropout: 0.2
+
+      mixt:
+        - module: scarf_ptrans
+          corruption_rate: 0.2
+        - module: mixture
+          raw:
+            - on
+            - off
+          mlp1:
+            - module: mlp_layer
+              dims: [128, 128]
+          linear1:
+            - module: linear_model
+              ridge:
+                - 100
+                - 10
+          switch: on/off
+
+      raw: on
+    - module: linear_model
+      ridge: 0.01

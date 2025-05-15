@@ -1,0 +1,26 @@
+############### Preprocessors
+tabzilla_preprocessor:
+  class: algorithms.preprocess.TabzillaPreprocessor
+
+
+############### Utils
+dummy_standalone:
+  class: algorithms.basic.DummyStandaloneModule
+
+dummy_linked:
+  class: algorithms.basic.DummyLinkedModule
+
+standard_scaler:
+  class: algorithms.basic.StandardScalerModel
+
+numerical_standard_scaler:
+  class: algorithms.basic.NumericalStandardScalerModel
+
+target_standard_scaler:
+  class: algorithms.basic.TargetStandardScalerModel
+
+pca:
+  class: algorithms.basic.PCAModel
+  args:
+    - n_components
+  

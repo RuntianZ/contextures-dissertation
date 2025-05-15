@@ -1,0 +1,113 @@
+defaults:
+  data_folder: anomaly/anomaly_data_truncated
+  seed: 0
+  epochs: 2000
+  folds: 5
+  log_interval: 10
+  weight_decay: 0.00001
+  scale_numerical_features: None
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/result.csv
+
+groups:
+  - ad39
+#datasets:
+#  - "4_ad_breastw"
+
+
+recipe:
+  pyod_autoencoder/recipe 1:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_autoencoder
+      hidden_neuron_list: [64, 32]
+      lr: 1e-3
+      batch_norm: True
+      epoch_num: 10
+      batch_size: 32
+      dropout_rate: 0.2
+      preprocessing: True
+      hidden_activation_name: "relu"
+      contamination: 0.1
+      device: "cpu"
+    - module: eval
+
+  pyod_autoencoder/recipe 2:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_autoencoder
+      hidden_neuron_list: [64, 32, 32]
+      lr: 1e-3
+      batch_norm: True
+      epoch_num: 10
+      batch_size: 32
+      dropout_rate: 0.2
+      preprocessing: True
+      hidden_activation_name: "relu"
+      contamination: 0.1
+      device: "cpu"
+    - module: eval
+
+  pyod_autoencoder/recipe 3:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_autoencoder
+      hidden_neuron_list: [64, 32]
+      lr: 1e-2
+      batch_norm: True
+      epoch_num: 10
+      batch_size: 32
+      dropout_rate: 0.2
+      preprocessing: True
+      hidden_activation_name: "relu"
+      contamination: 0.1
+      device: "cpu"
+    - module: eval
+
+  pyod_autoencoder/recipe 4:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_autoencoder
+      hidden_neuron_list: [64, 32]
+      lr: 1e-3
+      batch_norm: False
+      epoch_num: 10
+      batch_size: 32
+      dropout_rate: 0.2
+      preprocessing: True
+      hidden_activation_name: "relu"
+      contamination: 0.1
+      device: "cpu"
+    - module: eval
+
+  pyod_autoencoder/recipe 5:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_autoencoder
+      hidden_neuron_list: [ 64, 32 ]
+      lr: 1e-3
+      batch_norm: True
+      epoch_num: 50
+      batch_size: 32
+      dropout_rate: 0.2
+      preprocessing: True
+      hidden_activation_name: "relu"
+      contamination: 0.1
+      device: "cpu"
+    - module: eval
+
+  pyod_autoencoder/recipe 6:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_autoencoder
+      hidden_neuron_list: [64, 32]
+      lr: 1e-3
+      batch_norm: True
+      epoch_num: 10
+      batch_size: 32
+      dropout_rate: 0.2
+      preprocessing: False
+      hidden_activation_name: "relu"
+      contamination: 0.1
+      device: "cpu"
+    - module: eval

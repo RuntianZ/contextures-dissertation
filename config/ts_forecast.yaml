@@ -1,0 +1,14 @@
+monash:
+  - covid_deaths
+  - kaggle_web_traffic
+  - kaggle_web_traffic_weekly
+  - nn5_weekly
+  - saugeenday
+  - solar_weekly
+  - tourism_monthly
+  - tourism_quarterly
+  - tourism_yearly
+  - traffic_weekly
+  - us_births
+  - vehicle_trips
+  - weather

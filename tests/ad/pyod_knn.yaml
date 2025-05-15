@@ -1,0 +1,49 @@
+defaults:
+  data_folder: anomaly/anomaly_data_truncated
+  seed: 0
+  epochs: 2000
+  folds: 5
+  log_interval: 10
+  weight_decay: 0.00001
+  scale_numerical_features: None
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/result.csv
+
+groups:
+  - ad39
+#datasets:
+#  - "4_ad_breastw"
+
+
+recipe:
+  pyod_knn/recipe 1:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_knn
+      n_neighbors: 5
+      contamination: 0.1
+    - module: eval
+
+  pyod_knn/recipe 2:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_knn
+      n_neighbors: 10
+      contamination: 0.1
+    - module: eval
+
+  pyod_knn/recipe 3:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_knn
+      n_neighbors: 20
+      contamination: 0.1
+    - module: eval
+
+  pyod_knn/recipe 4:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_knn
+      n_neighbors: 30
+      contamination: 0.1
+    - module: eval

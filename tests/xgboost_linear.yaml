@@ -1,0 +1,28 @@
+# 88.4371
+defaults:
+  seed: 0
+  folds: 10
+  load: False
+  save: False
+  use_ssh: True
+  debug: True
+  data_folder: ../datasets
+  ckpt_folder: /data/locus/project_data/project_data2/rzhai/tabular-rl-ckpt
+
+datasets:
+  - openml__Click_prediction_small__190408
+
+results_folder: ../results_debug
+
+recipe:
+  xgboost-linear/recipe-1:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: standard_scaler
+    - module: xgboost_embedding_model
+      eta: 0.1
+      max_depth: 5
+      num_boost_round: 50
+    - module: linear_model
+      ridge: 0.01
+    - module: eval

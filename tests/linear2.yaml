@@ -1,0 +1,69 @@
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/result.csv
+
+# datasets:
+#   - openml__Australian__146818
+
+groups:
+  - cls56
+
+recipe:
+  linear/recipe 1:
+    - module: tabzilla_preprocessor
+    - module: linear_model
+      ridge: 1.0
+    - module: eval
+
+  linear/recipe 2:
+    - module: tabzilla_preprocessor
+    - module: linear_model
+      ridge: 0.1
+    - module: eval
+
+  linear/recipe 3:
+    - module: tabzilla_preprocessor
+    - module: linear_model
+      ridge: 0.01
+    - module: eval
+
+  linear/recipe 4:
+    - module: tabzilla_preprocessor
+    - module: linear_model
+      ridge: 0.001
+    - module: eval
+
+  linear/recipe 5:
+    - module: tabzilla_preprocessor
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 1.0
+    - module: eval
+
+  linear/recipe 6:
+    - module: tabzilla_preprocessor
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.1
+    - module: eval
+
+  linear/recipe 7:
+    - module: tabzilla_preprocessor
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.01
+    - module: eval
+
+  linear/recipe 8:
+    - module: tabzilla_preprocessor
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.001
+    - module: eval
+  

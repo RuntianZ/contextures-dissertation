@@ -1,0 +1,60 @@
+# 87.6056
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  debug: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt_fit_debug
+  result_file: ../results_debug/y1.csv
+
+datasets:
+  - openml__Australian__146818
+
+
+results_folder: ../results_debug
+
+recipe:
+  xgboost-layer-linear/recipe-1:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: standard_scaler
+    - module: xgboost_embedding_layer
+      eta: 0.1
+      max_depth: 5
+      num_boost_round: 20
+    - module: final_linear_layer
+    - module: fit
+      epochs: 200
+      lr: 0.1
+      wd: 0.00001
+      optimizer: adamw
+      scheduler: none
+      batch_size: 256
+      log_freq: 10
+    - module: transform
+      batch_size: 256
+    - module: eval
+
+  xgboost-layer-linear/recipe-2:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: standard_scaler
+    - module: xgboost_embedding_layer
+      eta: 0.1
+      max_depth: 5
+      num_boost_round: 20
+    - module: final_linear_layer
+    - module: fit
+      epochs: 200
+      lr: 0.001
+      wd: 0.00001
+      optimizer: adamw
+      scheduler: none
+      batch_size: 256
+      log_freq: 10
+    - module: transform
+      batch_size: 256
+    - module: eval

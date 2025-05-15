@@ -1,0 +1,279 @@
+defaults:
+  data_folder: anomaly/anomaly_data_truncated
+  seed: 0
+  epochs: 2000
+  folds: 5
+  log_interval: 10
+  weight_decay: 0.00001
+  scale_numerical_features: None
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/result.csv
+
+groups:
+  - ad39
+#datasets:
+#  - "4_ad_breastw"
+
+
+recipe:
+  pyod_lof/recipe 1:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_lof
+      n_neighbors: 30
+      contamination: 0.1
+    - module: eval
+
+  pyod_iforest/recipe 2:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_iforest
+      n_estimators: 50
+      contamination: 0.1
+      bootstrap: False
+    - module: eval
+
+  pyod_ocsvm/recipe 3:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_ocsvm
+      kernel: 'rbf'
+      nu: 0.5
+      max_iter: -1
+      tol: 1e-3
+      contamination: 0.1
+    - module: eval
+
+  pyod_abod/recipe 4:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_abod
+      n_neighbors: 30
+      method: "fast"
+      contamination: 0.1
+    - module: eval
+
+  pyod_cblof/recipe 5:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_cblof
+      n_clusters: 8
+      contamination: 0.1
+    - module: eval
+
+  pyod_cof/recipe 6:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_cof
+      n_neighbors: 20
+      method: "fast"
+      contamination: 0.1
+    - module: eval
+
+  pyod_copod/recipe 7:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_copod
+      contamination: 0.1
+    - module: eval
+
+  pyod_ecod/recipe 8:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_ecod
+      contamination: 0.1
+    - module: eval
+
+  pyod_feature_bagging/recipe 9:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_feature_bagging
+      n_estimators: 10
+      bootstrap_features: False
+    - module: eval
+
+  pyod_hbos/recipe 10:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_hbos
+      n_bins: 10
+      tol: 0.5
+      alpha: 0.1
+      contamination: 0.1
+    - module: eval
+
+  pyod_knn/recipe 11:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_knn
+      n_neighbors: 5
+      contamination: 0.1
+    - module: eval
+
+  pyod_lmdd/recipe 12:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_lmdd
+      dis_measure: "aad"
+      n_iter: 50
+      contamination: 0.1
+    - module: eval
+
+  pyod_loda/recipe 13:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_loda
+      n_bins: 10
+      n_random_cuts: 100
+      contamination: 0.1
+    - module: eval
+
+#  pyod_loci/recipe 14:
+#    - module: anomaly_preprocessor
+#    - module: minmax_scaler
+#    - module: pyod_loci
+#      alpha: 0.5
+#      k: 3
+#      contamination: 0.1
+#    - module: eval
+#
+#  pyod_lscp/recipe 15:
+#    - module: anomaly_preprocessor
+#    - module: minmax_scaler
+#    - module: pyod_lscp
+#      local_region_size: 30
+#      n_bins: 10
+#      contamination: 0.1
+#    - module: eval
+
+#  pyod_mad/recipe 16:
+#    - module: anomaly_preprocessor
+#    - module: minmax_scaler
+#    - module: pyod_mad
+#      threshold: 3.5
+#    - module: eval
+
+  pyod_mcd/recipe 17:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_mcd
+      assume_centered: False
+      contamination: 0.1
+    - module: eval
+
+  pyod_pca/recipe 18:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_pca
+      n_components: null
+      whiten: False
+      contamination: 0.1
+    - module: eval
+
+  pyod_rod/recipe 19:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_rod
+      contamination: 0.1
+    - module: eval
+
+  pyod_sod/recipe 20:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_sod
+      n_neighbors: 20
+      contamination: 0.1
+    - module: eval
+
+  pyod_sos/recipe 21:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_sos
+      perplexity: 4.5
+      eps: 10
+      contamination: 0.1
+    - module: eval
+
+  pyod_autoencoder/recipe 22:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_autoencoder
+      hidden_neuron_list: [64, 32]
+      lr: 1e-3
+      batch_norm: True
+      epoch_num: 10
+      batch_size: 32
+      dropout_rate: 0.2
+      preprocessing: True
+      hidden_activation_name: "relu"
+      contamination: 0.1
+      device: "cpu"
+    - module: eval
+
+  pyod_xgbod/recipe 23:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_xgbod
+      max_depth: 3
+      learning_rate: 0.1
+      n_estimators: 100
+    - module: eval
+
+  pyod_vae/recipe 24:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_vae
+      encoder_neuron_list: [128, 64, 32]
+      decoder_neuron_list: [32, 64, 128]
+      latent_dim: 2
+      lr: 1e-3
+      batch_norm: False
+      epoch_num: 30
+      batch_size: 32
+      dropout_rate: 0.2
+      preprocessing: True
+      hidden_activation_name: "relu"
+      output_activation_name: "sigmoid"
+      contamination: 0.1
+      device: "cpu"
+    - module: eval
+
+  pyod_so_gaal/recipe 25:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_so_gaal
+      stop_epochs: 20
+      lr_d: 0.01
+      lr_g: 0.0001
+      momentum: 0.9
+      contamination: 0.1
+    - module: eval
+
+  pyod_mo_gaal/recipe 26:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_mo_gaal
+      k: 10
+      stop_epochs: 20
+      lr_d: 0.01
+      lr_g: 0.0001
+      momentum: 0.9
+      contamination: 0.1
+    - module: eval
+
+  pyod_deepsvdd/recipe 27:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+    - module: pyod_deepsvdd
+      use_ae: False
+      hidden_neurons: null
+      hidden_activation: 'relu'
+      output_activation: 'sigmoid'
+      epochs: 100
+      batch_size: 32
+      dropout_rate: 0.2
+      preprocessing: True
+      l2_regularizer: 0.1
+      validation_size: 0.1
+      contamination: 0.1
+    - module: eval

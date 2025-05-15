@@ -1,0 +1,26 @@
+defaults:
+  seed: 0
+  folds: 10
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: baselines
+
+groups:
+  - cls98
+
+results_folder: cls98/decision_tree
+
+recipe:
+  decision_tree:
+    - module: tabzilla_preprocessor
+    - module: numerical_standard_scaler
+    - module: standard_scaler
+      switch: on/off
+    - module: decision_tree_model
+      max_depth:
+        - 10
+        - 20
+        - 40
+    - module: eval

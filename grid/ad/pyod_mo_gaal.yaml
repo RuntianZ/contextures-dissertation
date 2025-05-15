@@ -1,0 +1,45 @@
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: anomaly/anomaly_data_truncated
+  ckpt_folder: /data/locus/project_data/project_data2/rzhai/tabular-rl-ckpt
+
+results_folder: ad39/pyod_mo_gaal
+
+groups:
+  - ad39
+
+
+recipe:
+  pyod_mo_gaal:
+    - module: anomaly_preprocessor
+    - module: minmax_scaler
+      switch: on/off
+    - module: pyod_mo_gaal
+      k:
+        - 5
+        - 10
+        - 20
+        - 30
+      stop_epochs:
+        - 10
+        - 30
+        - 50
+      lr_d:
+        - 0.1
+        - 0.01
+        - 0.001
+      lr_g:
+        - 0.001
+        - 0.0001
+        - 0.00001
+      momentum:
+        - 0.3
+        - 0.6
+        - 0.9
+      contamination:
+        - 0.1
+    - module: eval

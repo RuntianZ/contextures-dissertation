@@ -1,0 +1,40 @@
+# 84.3001
+defaults:
+  seed: 0
+  folds: 10
+  load: False
+  save: False
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/result.csv
+  debug: True
+
+datasets:
+  - openml__Australian__146818
+  - "openml__ilpd__9971"
+  - "openml__ionosphere__145984"
+  - "openml__iris__59"
+  - "openml__irish__3543"
+
+recipe:
+  linear/recipe 5:
+    - module: tabzilla_preprocessor
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 1.0
+    - module: eval
+
+  linear/recipe 6:
+    - module: tabzilla_preprocessor
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.1
+    - module: eval
+
+  linear/recipe 7:
+    - module: tabzilla_preprocessor
+    - module: standard_scaler
+    - module: linear_model
+      ridge: 0.01
+    - module: eval

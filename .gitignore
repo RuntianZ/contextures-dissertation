@@ -1,0 +1,47 @@
+# Python
+__pycache__
+*.pyc
+
+# Log
+*.log
+*.log.*
+
+# Results
+# results*
+
+# Editor
+*.swp
+
+# Other
+.DS_Store
+wandb
+output
+
+
+# Temp files
+temp*
+experiment/datasets.tar 
+../datasets/*
+outputs/*
+# *.csv
+data/
+test.ipynb
+config/ssh.yaml 
+.idea/
+aaa.py
+log/*
+WellTunedSimpleNets/
+Auto-PyTorch/
+catboost_info/*
+setting/*
+config_sweep/*
+sweep*
+config/env.yaml
+figure/
+
+# time series gitignore
+.vscode/launch.json
+config.yaml
+time_series/monash
+results/
+

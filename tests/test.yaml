@@ -1,0 +1,21 @@
+defaults:
+  seed: 0
+  folds: 5
+  load: True
+  save: True
+  use_ssh: True
+  data_folder: ../datasets
+  ckpt_folder: ../ckpt
+  result_file: ../results_debug/result.csv
+
+datasets:
+  - openml__LED-display-domain-7digit__125921
+
+
+
+recipe:
+  linear/recipe 1:
+    - module: tabzilla_preprocessor
+    - module: linear_model
+      ridge: 1.0
+    - module: eval
